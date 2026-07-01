@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beyond the Shine | ISP House Quest</title>
+<style>
+  :root{
+    --navy:#16304A;
+    --navy-deep:#102437;
+    --gold:#C9A84C;
+    --white:#FFFFFF;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'Poppins','Segoe UI',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    background:var(--navy);
+  }
+  #app{min-height:100vh; display:flex; flex-direction:column;}
+
+  /* ---------- LOGIN SCREEN ---------- */
+  #screen-login{
+    min-height:100vh;
+    background:var(--navy);
+    display:flex;
+    position:relative;
+  }
+  #screen-login::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:14px;
+    background:var(--gold);
+  }
+  .login-menu-btn{
+    position:absolute;
+    top:28px; left:36px;
+    background:none; border:none;
+    display:flex; flex-direction:column; gap:5px;
+    cursor:pointer;
+    z-index:5;
+  }
+  .login-menu-btn span{width:26px; height:3px; background:var(--white); border-radius:2px;}
+  .login-logo{
+    position:absolute;
+    top:24px; left:80px;
+    display:flex; align-items:center; gap:10px;
+    color:var(--white);
+  }
+  .login-logo .mark{font-family:Georgia,serif; font-size:38px; font-weight:700; line-height:1;}
+  .login-logo .word{font-family:Georgia,serif; font-size:13px; line-height:1.25; letter-spacing:1px;}
+  .login-logo .word b{display:block; font-size:15px; letter-spacing:1.5px;}
+
+  .login-body{
+    width:100%;
+    padding:150px 40px 40px 80px;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center;
+  }
+  .gem-hero{width:150px; height:auto; margin-bottom:28px; filter:drop-shadow(0 10px 24px rgba(0,0,0,.35));}
+  .login-title{
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+    font-size:34px;
+    color:var(--white);
+    letter-spacing:1px;
+    margin-bottom:8px;
+  }
+  .login-sub{color:var(--gold); font-size:16px; margin-bottom:48px; font-style:italic;}
+  .login-field-label{
+    color:var(--white); font-size:14px; letter-spacing:4px; font-weight:600;
+    margin-bottom:14px;
+  }
+  #student-id-input{
+    width:100%; max-width:360px;
+    padding:16px 18px;
+    border-radius:14px;
+    border:none;
+    font-size:18px;
+    text-align:center;
+    letter-spacing:2px;
+    outline:none;
+    box-shadow:0 6px 16px rgba(0,0,0,.25);
+  }
+  #student-id-input:focus{box-shadow:0 0 0 3px var(--gold);}
+  #login-btn{
+    margin-top:22px;
+    padding:13px 46px;
+    border-radius:999px;
+    border:none;
+    background:var(--gold);
+    color:var(--navy-deep);
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  #login-btn:hover{transform:translateY(-2px); box-shadow:0 8px 18px rgba(201,168,76,.4);}
+  #login-btn:disabled{opacity:.6; cursor:default; transform:none;}
+  #login-error{
+    margin-top:16px; color:#FF9B9B; font-size:14px; min-height:20px;
+  }
+
+  /* ---------- HOUSE SCREEN ---------- */
+  #screen-house{
+    display:none;
+    min-height:100vh;
+    flex-direction:column;
+  }
+  .house-topbar{
+    background:#fff;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 20px;
+    box-shadow:0 2px 6px rgba(0,0,0,.06);
+    position:relative; z-index:20;
+  }
+  .menu-btn{
+    background:none; border:none; cursor:pointer;
+    display:flex; flex-direction:column; gap:5px; padding:6px;
+  }
+  .menu-btn span{width:24px; height:3px; background:var(--house-title,#333); border-radius:2px;}
+  .user-chip{display:flex; align-items:center; gap:10px; color:#333; font-size:15px;}
+  .user-chip .avatar{
+    width:34px; height:34px; border-radius:50%;
+    background:#e2e2e2; display:flex; align-items:center; justify-content:center;
+    color:#888; font-size:18px;
+  }
+
+  .house-body{
+    flex:1;
+    background:linear-gradient(180deg, var(--house-top,#ccc) 0%, var(--house-bottom,#fff) 60%);
+    display:flex; flex-direction:column; align-items:center;
+    padding:48px 24px 24px;
+    text-align:center;
+    position:relative;
+  }
+  .house-name{
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+    font-size:38px;
+    letter-spacing:1px;
+    color:var(--house-title,#333);
+    margin-bottom:22px;
+  }
+  .gem-icon{width:140px; height:auto; margin-bottom:34px; filter:drop-shadow(0 8px 16px rgba(0,0,0,.25));}
+  .stat-block{margin-bottom:30px; width:100%; max-width:340px;}
+  .stat-label{
+    font-size:20px; color:#2b2b2b; margin-bottom:10px; font-weight:500;
+  }
+  .stat-value{
+    background:#fff;
+    border-radius:16px;
+    padding:16px;
+    font-size:26px;
+    font-weight:700;
+    color:#2b2b2b;
+    box-shadow:0 4px 14px rgba(0,0,0,.08);
+  }
+  .house-footer{
+    margin-top:auto;
+    display:flex; align-items:center; gap:10px;
+    padding:20px 0 8px;
+    color:#333;
+  }
+  .house-footer .mark{font-family:Georgia,serif; font-size:24px; font-weight:700;}
+  .house-footer .word{font-family:Georgia,serif; font-size:10px; line-height:1.2; text-align:left;}
+  .house-footer .word b{display:block; font-size:11px;}
+
+  .loading-text{color:#333; font-size:15px; margin-top:20px;}
+
+  /* ---------- DROPDOWN MENU ---------- */
+  .dropdown{
+    position:absolute;
+    top:64px; left:16px;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    width:230px;
+    overflow:hidden;
+    display:none;
+    z-index:50;
+  }
+  .dropdown.open{display:block;}
+  .dropdown button{
+    width:100%;
+    text-align:left;
+    padding:14px 18px;
+    background:none;
+    border:none;
+    font-size:15px;
+    color:#333;
+    cursor:pointer;
+    display:flex; align-items:center; gap:10px;
+  }
+  .dropdown button:hover{background:#f4f4f4;}
+  .dropdown hr{border:none; border-top:1px solid #eee;}
+
+  /* ---------- LEADERBOARD MODAL ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.45);
+    display:none; align-items:center; justify-content:center;
+    z-index:100; padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:#fff; border-radius:20px; width:100%; max-width:380px;
+    padding:26px 22px; max-height:85vh; overflow-y:auto;
+  }
+  .modal h2{
+    font-family:'Poppins',sans-serif; font-weight:800; color:var(--navy);
+    margin-bottom:18px; font-size:20px; text-align:center;
+  }
+  .rank-row{
+    display:flex; align-items:center; gap:12px;
+    padding:12px 14px; border-radius:12px; margin-bottom:10px;
+  }
+  .rank-num{font-weight:800; font-size:18px; width:26px; color:#333;}
+  .rank-gem{width:30px; height:30px; flex-shrink:0;}
+  .rank-name{flex:1; font-weight:600; font-size:15px; color:#222;}
+  .rank-pts{font-weight:800; font-size:16px; color:#222;}
+  .modal-close{
+    display:block; margin:18px auto 0; background:var(--navy); color:#fff;
+    border:none; padding:10px 30px; border-radius:999px; cursor:pointer; font-weight:600;
+  }
+
+  @media (max-width:480px){
+    .login-logo{left:66px;}
+    .login-body{padding:150px 24px 32px 24px;}
+    .login-title{font-size:26px;}
+    .house-name{font-size:30px;}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ================= LOGIN SCREEN ================= -->
+  <div id="screen-login">
+    <button class="login-menu-btn" aria-label="menu"><span></span><span></span><span></span></button>
+    <div class="login-logo">
+      <span class="mark">L<span style="font-size:22px;">Ṡ</span>P</span>
+      <span class="word">LEARN<b>SATIT PATTANA<br>SCHOOL</b></span>
+    </div>
+    <div class="login-body">
+      <svg class="gem-hero" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="heroGem" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#EADFFF"/>
+            <stop offset="35%" stop-color="#FFD9C7"/>
+            <stop offset="70%" stop-color="#FFF3B0"/>
+            <stop offset="100%" stop-color="#C9E7FF"/>
+          </linearGradient>
+        </defs>
+        <polygon points="30,55 170,55 100,10" fill="#B9AEEA"/>
+        <polygon points="30,55 100,10 100,55" fill="#DCCBFF"/>
+        <polygon points="170,55 100,10 100,55" fill="#C8B9EE"/>
+        <polygon points="30,55 65,55 100,170" fill="#FFC9A8"/>
+        <polygon points="65,55 135,55 100,170" fill="url(#heroGem)"/>
+        <polygon points="135,55 170,55 100,170" fill="#A9D8FF"/>
+        <polygon points="30,55 65,55 100,55" fill="#F3E4FF" opacity="0.8"/>
+        <polygon points="135,55 170,55 100,55" fill="#CFE9FF" opacity="0.8"/>
+      </svg>
+      <div class="login-title">BEYOND THE SHINE</div>
+      <div class="login-sub">(Discover the gem within you)</div>
+      <div class="login-field-label">STUDENT ID</div>
+      <input id="student-id-input" type="text" inputmode="numeric" placeholder="" maxlength="10" autocomplete="off">
+      <button id="login-btn">เข้าสู่ระบบ</button>
+      <div id="login-error"></div>
+    </div>
+  </div>
+
+  <!-- ================= HOUSE SCREEN ================= -->
+  <div id="screen-house">
+    <div class="house-topbar">
+      <button class="menu-btn" id="menu-toggle" aria-label="menu"><span></span><span></span><span></span></button>
+      <div class="user-chip">
+        <div class="avatar">☺</div>
+        <span id="user-name-label">-</span>
+      </div>
+    </div>
+
+    <div class="dropdown" id="dropdown-menu">
+      <button id="btn-leaderboard">🏆 &nbsp; อันดับบ้านทั้ง 4</button>
+      <hr>
+      <button id="btn-logout">↩ &nbsp; ออกจากระบบ</button>
+    </div>
+
+    <div class="house-body" id="house-body">
+      <div class="house-name" id="house-name">-</div>
+      <div id="gem-slot"></div>
+
+      <div class="stat-block">
+        <div class="stat-label">Your Points</div>
+        <div class="stat-value" id="your-points">-</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Team Points</div>
+        <div class="stat-value" id="team-points">-</div>
+      </div>
+
+      <div class="loading-text" id="house-loading" style="display:none;">กำลังโหลดข้อมูล...</div>
+
+      <div class="house-footer">
+        <span class="mark">L<span style="font-size:16px;">Ṡ</span>P</span>
+        <span class="word">LEARN<b>SATIT PATTANA SCHOOL</b></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================= LEADERBOARD MODAL ================= -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h2>🏆 อันดับคะแนนบ้าน</h2>
+    <div id="rank-list"></div>
+    <button class="modal-close" id="modal-close-btn">ปิด</button>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   CONFIG — แก้ URL นี้เป็น Web App URL จาก Google Apps Script
+   ========================================================= */
+const CONFIG = {
+  API_URL: "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"
+};
+
+/* House theme definitions: keyword-matched against the "Team" text from the sheet */
+const HOUSES = [
+  {
+    key: "ruby",
+    label: "RED RUBY",
+    top: "#FF8383", bottom: "#FFE3E3", title: "#C21D1D",
+    gemMain: "#B23A3A", gemLight: "#E58B8B", gemDark: "#7A1F1F"
+  },
+  {
+    key: "amethyst",
+    label: "AMETHYST",
+    top: "#E58CF2", bottom: "#FBE6FF", title: "#8E1FA8",
+    gemMain: "#8E3AC9", gemLight: "#D9A6F5", gemDark: "#5A1680"
+  },
+  {
+    key: "jasper",
+    label: "GREEN JASPER",
+    top: "#6FCB55", bottom: "#D7F5C4", title: "#1C6FA8",
+    gemMain: "#3F7E86", gemLight: "#9FD6DE", gemDark: "#1F4B52"
+  },
+  {
+    key: "aquamarine",
+    label: "AQUAMARINE",
+    top: "#7C93F5", bottom: "#DCE4FF", title: "#1C6FA8",
+    gemMain: "#3F7E86", gemLight: "#9FD6DE", gemDark: "#1F4B52"
+  }
+];
+
+function matchHouse(teamText){
+  const t = (teamText || "").toLowerCase();
+  if (t.includes("ruby")) return HOUSES[0];
+  if (t.includes("amethyst")) return HOUSES[1];
+  if (t.includes("jasper")) return HOUSES[2];
+  if (t.includes("aquamarine")) return HOUSES[3];
+  return HOUSES[0];
+}
+
+function gemSVG(house, size){
+  return `
+  <svg class="gem-icon" style="width:${size}px" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="30,55 170,55 100,10" fill="${house.gemLight}"/>
+    <polygon points="30,55 100,10 100,55" fill="${house.gemMain}"/>
+    <polygon points="170,55 100,10 100,55" fill="${house.gemDark}"/>
+    <polygon points="30,55 65,55 100,170" fill="${house.gemDark}"/>
+    <polygon points="65,55 135,55 100,170" fill="${house.gemMain}"/>
+    <polygon points="135,55 170,55 100,170" fill="${house.gemLight}"/>
+    <polygon points="30,55 65,55 100,55" fill="${house.gemLight}" opacity="0.7"/>
+    <polygon points="135,55 170,55 100,55" fill="${house.gemMain}" opacity="0.7"/>
+  </svg>`;
+}
+
+/* ---------- DOM refs ---------- */
+const screenLogin = document.getElementById('screen-login');
+const screenHouse = document.getElementById('screen-house');
+const idInput = document.getElementById('student-id-input');
+const loginBtn = document.getElementById('login-btn');
+const loginError = document.getElementById('login-error');
+const houseBody = document.getElementById('house-body');
+const houseName = document.getElementById('house-name');
+const gemSlot = document.getElementById('gem-slot');
+const yourPoints = document.getElementById('your-points');
+const teamPoints = document.getElementById('team-points');
+const userNameLabel = document.getElementById('user-name-label');
+const houseLoading = document.getElementById('house-loading');
+const menuToggle = document.getElementById('menu-toggle');
+const dropdownMenu = document.getElementById('dropdown-menu');
+const modalOverlay = document.getElementById('modal-overlay');
+const rankList = document.getElementById('rank-list');
+
+/* ---------- Session (in-memory only) ---------- */
+let currentStudentId = null;
+
+/* ---------- Login flow ---------- */
+loginBtn.addEventListener('click', doLogin);
+idInput.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+async function doLogin(){
+  const id = idInput.value.trim();
+  loginError.textContent = "";
+  if (!id){
+    loginError.textContent = "กรุณากรอกรหัสนักเรียน";
+    return;
+  }
+  loginBtn.disabled = true;
+  loginBtn.textContent = "กำลังตรวจสอบ...";
+  try{
+    const res = await fetch(`${CONFIG.API_URL}?id=${encodeURIComponent(id)}`);
+    const data = await res.json();
+    if (!data.success){
+      loginError.textContent = "ไม่พบรหัสนักเรียนนี้ กรุณาตรวจสอบอีกครั้ง";
+      loginBtn.disabled = false;
+      loginBtn.textContent = "เข้าสู่ระบบ";
+      return;
+    }
+    currentStudentId = id;
+    renderHouseScreen(data.student);
+  } catch(err){
+    loginError.textContent = "เชื่อมต่อไม่สำเร็จ กรุณาลองใหม่อีกครั้ง";
+    loginBtn.disabled = false;
+    loginBtn.textContent = "เข้าสู่ระบบ";
+  }
+}
+
+function renderHouseScreen(student){
+  const house = matchHouse(student.team);
+  document.documentElement.style.setProperty('--house-top', house.top);
+  document.documentElement.style.setProperty('--house-bottom', house.bottom);
+  document.documentElement.style.setProperty('--house-title', house.title);
+
+  houseName.textContent = house.label;
+  gemSlot.innerHTML = gemSVG(house, 140);
+  yourPoints.textContent = student.points;
+  teamPoints.textContent = student.teamPoints;
+  userNameLabel.textContent = student.name;
+
+  screenLogin.style.display = 'none';
+  screenHouse.style.display = 'flex';
+
+  loginBtn.disabled = false;
+  loginBtn.textContent = "เข้าสู่ระบบ";
+}
+
+/* ---------- Menu ---------- */
+menuToggle.addEventListener('click', () => dropdownMenu.classList.toggle('open'));
+document.addEventListener('click', (e) => {
+  if (!dropdownMenu.contains(e.target) && e.target !== menuToggle && !menuToggle.contains(e.target)){
+    dropdownMenu.classList.remove('open');
+  }
+});
+
+document.getElementById('btn-logout').addEventListener('click', () => {
+  currentStudentId = null;
+  idInput.value = "";
+  screenHouse.style.display = 'none';
+  screenLogin.style.display = 'flex';
+  dropdownMenu.classList.remove('open');
+});
+
+/* ---------- Leaderboard ---------- */
+document.getElementById('btn-leaderboard').addEventListener('click', async () => {
+  dropdownMenu.classList.remove('open');
+  rankList.innerHTML = '<div class="loading-text">กำลังโหลด...</div>';
+  modalOverlay.classList.add('open');
+  try{
+    const res = await fetch(`${CONFIG.API_URL}?action=leaderboard`);
+    const data = await res.json();
+    if (!data.success){ rankList.innerHTML = '<div class="loading-text">โหลดข้อมูลไม่สำเร็จ</div>'; return; }
+    const rows = Object.entries(data.teams)
+      .map(([team, pts]) => ({ house: matchHouse(team), pts }))
+      .sort((a,b) => b.pts - a.pts);
+    rankList.innerHTML = rows.map((r, i) => `
+      <div class="rank-row" style="background:${r.house.bottom}">
+        <div class="rank-num">${i+1}</div>
+        ${gemSVG(r.house, 30).replace('class="gem-icon"','class="rank-gem"')}
+        <div class="rank-name" style="color:${r.house.title}">${r.house.label}</div>
+        <div class="rank-pts">${r.pts}</div>
+      </div>`).join('');
+  } catch(err){
+    rankList.innerHTML = '<div class="loading-text">เชื่อมต่อไม่สำเร็จ</div>';
+  }
+});
+
+document.getElementById('modal-close-btn').addEventListener('click', () => modalOverlay.classList.remove('open'));
+modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) modalOverlay.classList.remove('open'); });
+</script>
+</body>
+</html>
