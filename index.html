@@ -21,88 +21,120 @@
   }
   #app{min-height:100vh; display:flex; flex-direction:column;}
 
-  /* ---------- LOGIN SCREEN ---------- */
+  /* ---------- LOGIN SCREEN (starry glass card) ---------- */
   #screen-login{
     min-height:100vh;
-    background:var(--navy);
     display:flex;
+    align-items:center;
+    justify-content:center;
     position:relative;
+    overflow:hidden;
+    padding:32px 20px;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(120,150,210,.18), transparent 45%),
+      radial-gradient(circle at 85% 25%, rgba(140,120,200,.15), transparent 45%),
+      radial-gradient(circle at 50% 90%, rgba(60,90,140,.2), transparent 55%),
+      linear-gradient(160deg, #0d2138 0%, #16324d 45%, #0c1c30 100%);
   }
-  #screen-login::before{
-    content:"";
+  .star-field{position:absolute; inset:0; overflow:hidden; pointer-events:none;}
+  .star{
     position:absolute;
-    left:0; top:0; bottom:0;
-    width:14px;
-    background:var(--gold);
+    background:#fff;
+    border-radius:50%;
+    animation:twinkle 3.5s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:.15; transform:scale(1);}
+    50%{opacity:.9; transform:scale(1.3);}
   }
   .login-menu-btn{
     position:absolute;
-    top:28px; left:36px;
+    top:26px; left:26px;
     background:none; border:none;
     display:flex; flex-direction:column; gap:5px;
     cursor:pointer;
     z-index:5;
   }
-  .login-menu-btn span{width:26px; height:3px; background:var(--white); border-radius:2px;}
-  .login-logo{
-    position:absolute;
-    top:24px; left:80px;
-    display:flex; align-items:center; gap:10px;
-    color:var(--white);
-  }
-  .login-logo .mark{font-family:Georgia,serif; font-size:38px; font-weight:700; line-height:1;}
-  .login-logo .word{font-family:Georgia,serif; font-size:13px; line-height:1.25; letter-spacing:1px;}
-  .login-logo .word b{display:block; font-size:15px; letter-spacing:1.5px;}
+  .login-menu-btn span{width:24px; height:2.5px; background:rgba(255,255,255,.85); border-radius:2px;}
 
-  .login-body{
-    width:100%;
-    padding:150px 40px 40px 80px;
-    display:flex; flex-direction:column; align-items:center;
+  .login-card{
+    position:relative;
+    z-index:2;
+    width:100%; max-width:400px;
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:28px;
+    padding:48px 36px 36px;
     text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
   }
-  .gem-hero{width:150px; height:auto; margin-bottom:28px; filter:drop-shadow(0 10px 24px rgba(0,0,0,.35));}
+  .gem-hero{width:100px; height:auto; margin:0 auto 26px; filter:drop-shadow(0 8px 18px rgba(201,168,76,.35));}
+  .login-eyebrow{
+    color:rgba(255,255,255,.55);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
   .login-title{
     font-family:'Poppins',sans-serif;
     font-weight:800;
-    font-size:34px;
+    font-size:44px;
     color:var(--white);
-    letter-spacing:1px;
-    margin-bottom:8px;
+    letter-spacing:2px;
+    margin-bottom:10px;
   }
-  .login-sub{color:var(--gold); font-size:16px; margin-bottom:48px; font-style:italic;}
+  .login-tagline{
+    font-family:Georgia,serif;
+    font-style:italic;
+    color:var(--gold);
+    font-size:22px;
+    margin-bottom:6px;
+  }
+  .login-sub{color:rgba(255,255,255,.5); font-size:13px; margin-bottom:32px;}
   .login-field-label{
-    color:var(--white); font-size:14px; letter-spacing:4px; font-weight:600;
-    margin-bottom:14px;
+    color:var(--gold); font-size:12px; letter-spacing:3px; font-weight:700;
+    margin-bottom:12px; text-align:left;
   }
   #student-id-input{
-    width:100%; max-width:360px;
-    padding:16px 18px;
+    width:100%;
+    padding:15px 18px;
     border-radius:14px;
     border:none;
-    font-size:18px;
-    text-align:center;
-    letter-spacing:2px;
+    font-size:16px;
     outline:none;
-    box-shadow:0 6px 16px rgba(0,0,0,.25);
+    background:rgba(255,255,255,.92);
+    color:#333;
   }
-  #student-id-input:focus{box-shadow:0 0 0 3px var(--gold);}
+  #student-id-input::placeholder{color:#9aa0a8;}
+  #student-id-input:focus{box-shadow:0 0 0 3px rgba(201,168,76,.6);}
   #login-btn{
-    margin-top:22px;
-    padding:13px 46px;
-    border-radius:999px;
+    margin-top:20px;
+    width:100%;
+    padding:15px;
+    border-radius:14px;
     border:none;
-    background:var(--gold);
-    color:var(--navy-deep);
+    background:linear-gradient(135deg,#E4C878 0%, var(--gold) 55%, #B8934A 100%);
+    color:#1f2a1a;
     font-weight:700;
     font-size:15px;
-    letter-spacing:1px;
+    letter-spacing:.5px;
     cursor:pointer;
     transition:transform .15s ease, box-shadow .15s ease;
   }
-  #login-btn:hover{transform:translateY(-2px); box-shadow:0 8px 18px rgba(201,168,76,.4);}
+  #login-btn:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(201,168,76,.4);}
   #login-btn:disabled{opacity:.6; cursor:default; transform:none;}
   #login-error{
-    margin-top:16px; color:#FF9B9B; font-size:14px; min-height:20px;
+    margin-top:14px; color:#FF9B9B; font-size:13px; min-height:18px;
+  }
+  .login-footer{
+    margin-top:26px;
+    color:rgba(255,255,255,.4);
+    font-size:11px;
+    letter-spacing:.5px;
   }
 
   /* ---------- HOUSE SCREEN ---------- */
@@ -240,36 +272,31 @@
 
   <!-- ================= LOGIN SCREEN ================= -->
   <div id="screen-login">
+    <div class="star-field" id="star-field"></div>
     <button class="login-menu-btn" aria-label="menu"><span></span><span></span><span></span></button>
-    <div class="login-logo">
-      <span class="mark">L<span style="font-size:22px;">Ṡ</span>P</span>
-      <span class="word">LEARN<b>SATIT PATTANA<br>SCHOOL</b></span>
-    </div>
-    <div class="login-body">
-      <svg class="gem-hero" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+
+    <div class="login-card">
+      <svg class="gem-hero" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="heroGem" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#EADFFF"/>
-            <stop offset="35%" stop-color="#FFD9C7"/>
-            <stop offset="70%" stop-color="#FFF3B0"/>
-            <stop offset="100%" stop-color="#C9E7FF"/>
+            <stop offset="0%" stop-color="#F3DFA0"/>
+            <stop offset="50%" stop-color="#D8AE50"/>
+            <stop offset="100%" stop-color="#9E7423"/>
           </linearGradient>
         </defs>
-        <polygon points="30,55 170,55 100,10" fill="#B9AEEA"/>
-        <polygon points="30,55 100,10 100,55" fill="#DCCBFF"/>
-        <polygon points="170,55 100,10 100,55" fill="#C8B9EE"/>
-        <polygon points="30,55 65,55 100,170" fill="#FFC9A8"/>
-        <polygon points="65,55 135,55 100,170" fill="url(#heroGem)"/>
-        <polygon points="135,55 170,55 100,170" fill="#A9D8FF"/>
-        <polygon points="30,55 65,55 100,55" fill="#F3E4FF" opacity="0.8"/>
-        <polygon points="135,55 170,55 100,55" fill="#CFE9FF" opacity="0.8"/>
+        <polygon points="60,5 90,42 60,50 30,42" fill="#F3DFA0"/>
+        <polygon points="30,42 60,50 60,135 15,55" fill="#B8903E"/>
+        <polygon points="90,42 60,50 60,135 105,55" fill="url(#heroGem)"/>
       </svg>
-      <div class="login-title">BEYOND THE SHINE</div>
+      <div class="login-eyebrow">LEARN SATIT PATTANA SCHOOL</div>
+      <div class="login-title">ISP</div>
+      <div class="login-tagline">Beyond the Shine</div>
       <div class="login-sub">(Discover the gem within you)</div>
       <div class="login-field-label">STUDENT ID</div>
-      <input id="student-id-input" type="text" inputmode="numeric" placeholder="" maxlength="10" autocomplete="off">
+      <input id="student-id-input" type="text" inputmode="numeric" placeholder="กรอกรหัสนักเรียน" maxlength="10" autocomplete="off">
       <button id="login-btn">เข้าสู่ระบบ</button>
       <div id="login-error"></div>
+      <div class="login-footer">ISP House Quest 2026 · กรกฎาคม – กันยายน</div>
     </div>
   </div>
 
@@ -327,7 +354,7 @@
    CONFIG — แก้ URL นี้เป็น Web App URL จาก Google Apps Script
    ========================================================= */
 const CONFIG = {
-  API_URL: "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"
+  API_URL: "https://script.google.com/a/macros/lsp.ac.th/s/AKfycbwYdDYzrNLwwkeR5kgR0D716ZLSonFbnRA7MpjfF3iCdMnws-ctIntgHMVDX2dQm6s/exec"
 };
 
 /* House theme definitions: keyword-matched against the "Team" text from the sheet */
@@ -380,6 +407,23 @@ function gemSVG(house, size){
     <polygon points="135,55 170,55 100,55" fill="${house.gemMain}" opacity="0.7"/>
   </svg>`;
 }
+
+/* ---------- Generate twinkling star field ---------- */
+(function generateStars(){
+  const field = document.getElementById('star-field');
+  const count = 60;
+  for (let i = 0; i < count; i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2 + 1;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = (Math.random() * 3.5) + 's';
+    field.appendChild(s);
+  }
+})();
 
 /* ---------- DOM refs ---------- */
 const screenLogin = document.getElementById('screen-login');
